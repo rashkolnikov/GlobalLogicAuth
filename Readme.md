@@ -27,7 +27,7 @@ The Global Logic Auth server pretends to be a microservice for creating and quer
 1. Fork this repository and clone it
 
 ```
-$ git clone gitUrl
+$ git clone https://github.com/rashkolnikov/GlobalLogicAuth
 ```
 
 2. Navigate into the folder
