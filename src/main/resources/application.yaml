@@ -1,0 +1,37 @@
+app-jwt:
+  expire-length: '604800000'
+  secret: 82af4c539e164a0398ca1558373ac30d
+
+# Basic spring config
+server:
+  port: 2001
+  compression: #GZIP
+    min-response-size: 1024
+    enabled: true
+    mime-types: text/html,text/plain,text/css,application/javascript,application/json
+  servlet:
+    encoding:
+      charset: UTF-8
+
+spring:
+  mandatory-file-encoding: UTF-8
+  jpa:
+    database-platform: postgres
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: true
+
+globalLogic-databases:
+  mandatory-file-encoding: UTF-8
+  # PostgreSQL
+  relational:
+    url: jdbc:postgresql://localhost:5432/globalLogic
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: root
+    hikari: # Default pool connection
+      connectionTimeout: 20000
+      maximumPoolSize: 5
