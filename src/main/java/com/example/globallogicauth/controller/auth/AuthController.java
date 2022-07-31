@@ -17,9 +17,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.Servlet;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.Instant;
 import java.util.ArrayList;

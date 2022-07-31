@@ -6,7 +6,6 @@ import com.example.globallogicauth.error.ConflictException;
 import com.example.globallogicauth.error.UnauthorizedException;
 import com.example.globallogicauth.facade.ModelMapperService;
 import com.example.globallogicauth.repository.UserBaseRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
