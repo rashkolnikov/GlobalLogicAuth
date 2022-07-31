@@ -18,6 +18,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.Servlet;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -34,6 +36,8 @@ public class AuthController {
     private final UserBaseService userBaseService;
 
     private final PhoneService phoneService;
+
+    private final AuthenticationManager authenticationManager;
 
     private final JwtService jwtService;
 
@@ -87,8 +91,8 @@ public class AuthController {
 
         this.userBaseService.validationAuthSignIn(userDto.getEmail());
 
-        /*this.authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userDto.getEmail(), this.userBaseService.getPasswordFrom(userDto)));*/
+        this.authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userDto.getEmail(), this.userBaseService.getPasswordFrom(userDto)));
 
         String newJwt = this.jwtService.createJwt(userDto.getUuid());
 
@@ -96,7 +100,7 @@ public class AuthController {
 
         if(!this.phoneService.findByUuid(userDto.getUuid()).isEmpty()){
             List<PhoneDto> phoneDtos = this.phoneService.findByUuid(userDto.getUuid());
-
+            // Functional programming incorporated in Java8
             phoneDtos.forEach( phoneDto -> {
                 phones.add(PhoneResponse.builder()
                         .number(phoneDto.getNumber())

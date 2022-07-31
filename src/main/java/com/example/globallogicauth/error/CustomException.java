@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Getter
 public abstract class CustomException extends RuntimeException{
@@ -16,9 +17,9 @@ public abstract class CustomException extends RuntimeException{
     private final String detail;
 
 
-    public CustomException(@NonNull final Timestamp timestamp, final int code, @NonNull final String detail){
+    public CustomException(final int code, @NonNull final String detail){
         super(detail);
-        this.timestamp = timestamp;
+        this.timestamp = Timestamp.from(Instant.now());
         this.code = code;
         this.detail = detail;
     }

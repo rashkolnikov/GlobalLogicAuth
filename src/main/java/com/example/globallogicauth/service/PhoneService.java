@@ -21,7 +21,7 @@ public class PhoneService {
 
     @NonNull public List<PhoneDto> findByUuid(@NonNull String uuid){
         List<Phone> phones = this.phoneRepository.findByUuid(uuid);
-
+        // this::toDto method reference incorporated in Java8
         return phones.stream().map(this::toDto).collect(Collectors.toList());
     }
 

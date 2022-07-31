@@ -116,4 +116,8 @@ public class UserBaseService implements UserDetailsService {
         Optional<UserBase> userBase = this.findByUuid(uuid);
         return userBase.isPresent();
     }
+
+    public String getPasswordFrom(UserDto userDto){
+        return this.findByUuid(userDto.getUuid()).get().getPassword();
+    }
 }

@@ -6,6 +6,7 @@ import com.example.globallogicauth.error.ConflictException;
 import com.example.globallogicauth.error.UnauthorizedException;
 import com.example.globallogicauth.facade.ModelMapperService;
 import com.example.globallogicauth.repository.UserBaseRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -101,7 +102,7 @@ public class UserBaseServiceTests {
         UserDto userDto = this.userBaseService.findDtoByUuid(uuid);
 
         assertNotNull(userDto);
-        assertEquals(userDto.getClass(), UserDto.class);
+        assertEquals(uuid, userDto.getUuid());
     }
 
     @Test
