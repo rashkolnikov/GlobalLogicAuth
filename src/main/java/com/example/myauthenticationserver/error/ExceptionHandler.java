@@ -34,6 +34,21 @@ public class ExceptionHandler {
             org.springframework.web.bind.MethodArgumentNotValidException.class
     })
     @ResponseBody
+    public @NonNull ErrorResponse badRequestMethodArgumentNotValidException() {
+        return ErrorResponse.builder()
+                .add(ExceptionResponse.builder()
+                        .timestamp(Timestamp.from(Instant.now()))
+                        .code(400)
+                        .detail("The request has invalid valid data.")
+                        .build())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @org.springframework.web.bind.annotation.ExceptionHandler({
+            org.springframework.web.bind.MethodArgumentNotValidException.class
+    })
+    @ResponseBody
     public @NonNull ErrorResponse badRequestRequestMethodArgumentNotValidException() {
         return ErrorResponse.builder()
                 .add(ExceptionResponse.builder()
