@@ -16,15 +16,30 @@ public class ExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @org.springframework.web.bind.annotation.ExceptionHandler({
-            org.springframework.web.bind.MethodArgumentNotValidException.class
+            org.springframework.http.converter.HttpMessageNotReadableException.class
     })
     @ResponseBody
-    public @NonNull ErrorResponse badRequestRequest() {
+    public @NonNull ErrorResponse badRequestRequestHttpMessageNotReadableException() {
         return ErrorResponse.builder()
                 .add(ExceptionResponse.builder()
                         .timestamp(Timestamp.from(Instant.now()))
                         .code(400)
-                        .detail("The request has not valid data.")
+                        .detail("The request has invalid valid data.")
+                        .build())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @org.springframework.web.bind.annotation.ExceptionHandler({
+            org.springframework.web.bind.MethodArgumentNotValidException.class
+    })
+    @ResponseBody
+    public @NonNull ErrorResponse badRequestRequestMethodArgumentNotValidException() {
+        return ErrorResponse.builder()
+                .add(ExceptionResponse.builder()
+                        .timestamp(Timestamp.from(Instant.now()))
+                        .code(400)
+                        .detail("The request has invalid valid data.")
                         .build())
                 .build();
     }
