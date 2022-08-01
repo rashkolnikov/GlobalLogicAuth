@@ -47,8 +47,24 @@ public class UserBaseService implements UserDetailsService {
         return userBase.get();
     }
 
+    public UserBase findByEmailSafeNull(String email) {
+        Optional<UserBase> userBase = this.userBaseRepository.findByEmail(email);
+
+        if (!userBase.isPresent()) {
+            throw new NotFoundException("The user doesnt exist.");
+        }
+
+        return userBase.get();
+    }
+
     public UserDto findDtoByUuid(String uuid) {
         UserBase userBase = this.findByUuidSafeNull(uuid);
+
+        return this.modelMapperService.map(userBase, UserDto.class);
+    }
+
+    public UserDto findDtoByEmail(String email) {
+        UserBase userBase = this.findByEmailSafeNull(email);
 
         return this.modelMapperService.map(userBase, UserDto.class);
     }
@@ -82,8 +98,8 @@ public class UserBaseService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String uuid) throws UsernameNotFoundException {
-        final UserBase userBase = this.findByUuidSafeNull(uuid);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        final UserBase userBase = this.findByEmailSafeNull(email);
         return buildUserForAuthentication(userBase);
     }
 
@@ -115,9 +131,5 @@ public class UserBaseService implements UserDetailsService {
     public boolean isUuidRegistered(@NonNull final String uuid) {
         Optional<UserBase> userBase = this.findByUuid(uuid);
         return userBase.isPresent();
-    }
-
-    public String getPasswordFrom(UserDto userDto){
-        return this.findByUuid(userDto.getUuid()).get().getPassword();
     }
 }

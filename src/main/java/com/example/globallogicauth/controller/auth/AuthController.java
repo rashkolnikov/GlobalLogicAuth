@@ -10,7 +10,6 @@ import com.example.globallogicauth.service.PhoneService;
 import com.example.globallogicauth.service.UserBaseService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,6 +39,7 @@ public class AuthController {
 
     @PostMapping(Routes.AUTH_SIGN_UP)
     public @NonNull ResponseEntity<?> auth_sign_up(@Valid @RequestBody SignUpRequest signUpRequest){
+
         this.userBaseService.isEmailInUse(signUpRequest.getEmail());
 
         UserDto userDto = UserDto.builder()
@@ -67,7 +67,7 @@ public class AuthController {
             } );
         }
 
-        String jwt = this.jwtService.createJwt(userDto.getUuid());
+        String jwt = this.jwtService.createJwtWithEmailAndPassword(userDto.getEmail(), signUpRequest.getPassword());
 
         return ResponseEntity.ok(SignUpResponse.builder()
                 .uuid(userDto.getUuid())
@@ -82,16 +82,19 @@ public class AuthController {
     @PostMapping(Routes.AUTH_LOGIN)
     public @NonNull ResponseEntity<?> auth_login(
             @Valid @RequestBody LoginRequest loginRequest) {
-        String userUuid = this.jwtService.getUserUuid(loginRequest.getJwt());
 
-        UserDto userDto = this.userBaseService.findDtoByUuid(userUuid);
+        String email = this.jwtService.getEmail(loginRequest.getJwt());
+
+        UserDto userDto = this.userBaseService.findDtoByEmail(email);
 
         this.userBaseService.validationAuthSignIn(userDto.getEmail());
 
-        this.authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userDto.getEmail(), this.userBaseService.getPasswordFrom(userDto)));
+        String password = this.jwtService.getPassword(loginRequest.getJwt());
 
-        String newJwt = this.jwtService.createJwt(userDto.getUuid());
+        this.authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password));
+
+        String newJwt = this.jwtService.createJwtWithEmailAndPassword(email, password);
 
         List<PhoneResponse> phones = new ArrayList<>();
 

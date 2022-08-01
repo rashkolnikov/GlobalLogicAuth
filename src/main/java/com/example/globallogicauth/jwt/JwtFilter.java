@@ -43,14 +43,10 @@ public class JwtFilter extends BasicAuthenticationFilter {
             if (jwt != null && this.jwtService.isBearer(jwt)) {
                 final Authentication auth = this.jwtService.getAuthentication(jwt);
                 SecurityContextHolder.getContext().setAuthentication(auth);
-                final String userUuid = this.jwtService.getUserUuid(jwt);
+                final String userUuid = this.jwtService.getEmail(jwt);
                 if (this.userBaseService.userEnabled(userUuid)) {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN, USER_NOT_ENABLED);
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            jwt,
-                            null,
-                            new ArrayList<>()
-                            );
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(jwt, null);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }

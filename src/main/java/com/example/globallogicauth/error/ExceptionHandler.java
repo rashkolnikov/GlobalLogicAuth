@@ -7,9 +7,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 @ControllerAdvice
 public class ExceptionHandler {
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @org.springframework.web.bind.annotation.ExceptionHandler({
+            BadRequestException.class
+    })
+    @ResponseBody
+    public @NonNull ErrorResponse badRequestRequest(@NonNull BadRequestException badRequestException) {
+        return ErrorResponse.builder()
+                .add(ExceptionResponse.builder()
+                        .timestamp(badRequestException.getTimestamp())
+                        .code(badRequestException.getCode())
+                        .detail(badRequestException.getDetail())
+                        .build())
+                .build();
+    }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @org.springframework.web.bind.annotation.ExceptionHandler({
@@ -67,6 +83,20 @@ public class ExceptionHandler {
                         .timestamp(conflictException.getTimestamp())
                         .code(conflictException.getCode())
                         .detail(conflictException.getDetail())
+                        .build())
+                .build();    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @org.springframework.web.bind.annotation.ExceptionHandler({
+            UnprocessableEntityException.class
+    })
+    @ResponseBody
+    public @NonNull ErrorResponse conflictRequest(@NonNull UnprocessableEntityException unprocessableEntityException) {
+        return ErrorResponse.builder()
+                .add(ExceptionResponse.builder()
+                        .timestamp(unprocessableEntityException.getTimestamp())
+                        .code(unprocessableEntityException.getCode())
+                        .detail(unprocessableEntityException.getDetail())
                         .build())
                 .build();    }
 

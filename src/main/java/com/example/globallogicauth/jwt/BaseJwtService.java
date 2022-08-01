@@ -29,11 +29,12 @@ public abstract class BaseJwtService implements IJwtService{
 
     public abstract @NonNull String getAudience();
 
-    public @NonNull String createJwt(final @NonNull String username){
+    public @NonNull String createJwtWithEmailAndPassword(final @NonNull String email, final @NonNull String password){
         final Claims claims = Jwts.claims()
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuer(ISSUER)
                 .setAudience(this.getAudience());
+        claims.put("Password", password);
         final Date now = new Date();
         final Date expiration = new Date(now.getTime() + this.getJwtDurationInMilliseconds());
         return Jwts.builder()
@@ -45,13 +46,18 @@ public abstract class BaseJwtService implements IJwtService{
     }
 
     public @NonNull Authentication getAuthentication(final @NonNull String jwt){
-        UserDetails userDetails = this.getUserDetailsService().loadUserByUsername(this.getUserUuid(jwt));
+        UserDetails userDetails = this.getUserDetailsService().loadUserByUsername(this.getEmail(jwt));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public @NonNull String getUserUuid(final @NonNull String jwt) {
+    public @NonNull String getEmail(final @NonNull String jwt) {
         return Jwts.parser().setSigningKey(this.getSecretKey()).parseClaimsJws(jwt).getBody().getSubject();
     }
+
+    public @NonNull String getPassword(final @NonNull String jwt) {
+        return Jwts.parser().setSigningKey(this.getSecretKey()).parseClaimsJws(jwt).getBody().get("Password", String.class);
+    }
+
 
     public String resolveJwt(final @NonNull HttpServletRequest req) {
         String jwt = req.getHeader("Authorization");
