@@ -120,4 +120,18 @@ public class ExceptionHandler {
                 .build();
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @org.springframework.web.bind.annotation.ExceptionHandler({
+            IllegalArgumentException.class
+    })
+    @ResponseBody
+    public @NonNull ErrorResponse badRequestInternalServerError() {
+        return ErrorResponse.builder()
+                .add(ExceptionResponse.builder()
+                        .timestamp(Timestamp.from(Instant.now()))
+                        .code(500)
+                        .detail("Internal server error.")
+                        .build())
+                .build();
+    }
 }
