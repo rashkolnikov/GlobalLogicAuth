@@ -1,7 +1,7 @@
-# GlobalLogic Auth Server
+# My authentication server
 
 ---
-The Global Logic Auth server pretends to be a microservice for creating and querying users.
+This authentication server pretends to be a microservice for creating and querying users.
 
 ### Construction instructions - Prerequisites
 
