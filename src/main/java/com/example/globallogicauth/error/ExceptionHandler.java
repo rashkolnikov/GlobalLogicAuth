@@ -7,22 +7,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.client.HttpClientErrorException;
+
+import java.sql.Timestamp;
+import java.time.Instant;
 
 @ControllerAdvice
 public class ExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @org.springframework.web.bind.annotation.ExceptionHandler({
-            BadRequestException.class
+            org.springframework.web.bind.MethodArgumentNotValidException.class
     })
     @ResponseBody
-    public @NonNull ErrorResponse badRequestRequest(@NonNull BadRequestException badRequestException) {
+    public @NonNull ErrorResponse badRequestRequest() {
         return ErrorResponse.builder()
                 .add(ExceptionResponse.builder()
-                        .timestamp(badRequestException.getTimestamp())
-                        .code(badRequestException.getCode())
-                        .detail(badRequestException.getDetail())
+                        .timestamp(Timestamp.from(Instant.now()))
+                        .code(400)
+                        .detail("The request has not valid data.")
                         .build())
                 .build();
     }
@@ -58,20 +60,6 @@ public class ExceptionHandler {
                 .build();
     }
 
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    @org.springframework.web.bind.annotation.ExceptionHandler({
-            ForbiddenException.class
-    })
-    @ResponseBody
-    public @NonNull ErrorResponse forbiddenRequest(@NonNull ForbiddenException forbiddenException) {
-        return ErrorResponse.builder()
-                .add(ExceptionResponse.builder()
-                        .timestamp(forbiddenException.getTimestamp())
-                        .code(forbiddenException.getCode())
-                        .detail(forbiddenException.getDetail())
-                        .build())
-                .build();    }
-
     @ResponseStatus(HttpStatus.CONFLICT)
     @org.springframework.web.bind.annotation.ExceptionHandler({
             ConflictException.class
@@ -84,7 +72,8 @@ public class ExceptionHandler {
                         .code(conflictException.getCode())
                         .detail(conflictException.getDetail())
                         .build())
-                .build();    }
+                .build();
+    }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @org.springframework.web.bind.annotation.ExceptionHandler({
@@ -98,6 +87,7 @@ public class ExceptionHandler {
                         .code(unprocessableEntityException.getCode())
                         .detail(unprocessableEntityException.getDetail())
                         .build())
-                .build();    }
+                .build();
+    }
 
 }

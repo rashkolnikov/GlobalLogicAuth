@@ -16,13 +16,15 @@ public class SignUpRequest {
     String name;
 
     @NonNull
-    @Email(message = "The email isn't valid", regexp = "^(.+)@(\\S+)$") // (regexp = ".+[@].+[\\.].+")
+    @Email(regexp = "[A-Z0-9._]+@[A-Z0-9.-]+\\.[A-Z]{2,4}")
     String email;
 
     @NonNull
-    @Pattern(message = "The password isn't valid", regexp = "^[^A-Z]*[A-Z][^A-Z]*|^[^0-9]*[0-9][^0-9]*[0-9][^0-9]*|^[a-zA-Z0-9]{8,12}")
+    @Pattern(regexp = "^(?=[^A-Z]*[A-Z][^A-Z]*$)(?=.*[0-9][^0-9]*[0-9]|.*[0-9][0-9]*)[a-zA-Z0-9]{8,12}$")
     String password;
 
     List<PhoneRequest> phones;
+
+
 
 }
