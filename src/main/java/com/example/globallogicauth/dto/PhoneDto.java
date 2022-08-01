@@ -45,7 +45,7 @@ public class PhoneDto {
         }
 
         @Override
-        public @NonNull PhoneDtoBuilder.CountryCode cityCode(@NonNull int cityCode) {
+        public @NonNull PhoneDtoBuilder.CountryCode cityCode(int cityCode) {
             this.phoneDto.setCityCode(cityCode);
             return this;
         }
@@ -73,7 +73,7 @@ public class PhoneDto {
         }
 
         interface CityCode{
-            @NonNull PhoneDtoBuilder.CountryCode cityCode(@NonNull int cityCode);
+            @NonNull PhoneDtoBuilder.CountryCode cityCode(int cityCode);
         }
 
         interface CountryCode{
