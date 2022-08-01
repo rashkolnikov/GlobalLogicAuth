@@ -138,7 +138,7 @@ public class UserBaseServiceTests {
 
     @Test
     public void loadUserByUsernameTest(){
-        UserDetails userDetails = this.userBaseService.loadUserByUsername(uuid);
+        UserDetails userDetails = this.userBaseService.loadUserByUsername(email);
 
         assertEquals(email, userDetails.getUsername());
         assertEquals(password, userDetails.getPassword());

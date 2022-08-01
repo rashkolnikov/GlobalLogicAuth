@@ -38,7 +38,14 @@ $ cd GlobalLogicAuth
 
 3. Run the project
 ```
-./gradlew bootRun
+Open the project in Intellij or your favorite editor and run the application.
+
+
+If you have the JVM encoding correctly set, you can only run:
+
+./gradlew build
+
+./gradlew run
 ```
 
 4. Navigate to `http://localhost:2001/swagger-ui.html` in your browser to check everything is working correctly. You can change the default port in the `application.yml` file
