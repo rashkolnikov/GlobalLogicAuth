@@ -16,7 +16,7 @@ public class SignUpRequest {
     String name;
 
     @NonNull
-    @Email(regexp = "[A-Z0-9._]+@[A-Z0-9.-]+\\.[A-Z]{2,4}")
+    @Email(regexp = "[a-zA-Z0-9._]+@[a-z0-9.-]+\\.[a-z]{2,4}")
     String email;
 
     @NonNull
